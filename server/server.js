@@ -17,10 +17,10 @@ io.on('connection', function(socket){
 	socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
 
 	socket.broadcast.emit('newMessage',generateMessage('Admin', 'New user joined'));
-	
+
 	socket.on('createMessage', function(msg){
 		console.log(msg);
-		io.emit('newMessage', generateMessage(msg.from, msg.text));
+		socket.broadcast.emit('newMessage', generateMessage(msg.from, msg.text));
 	});
 
 	socket.on('disconnect', function(){
