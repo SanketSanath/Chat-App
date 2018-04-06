@@ -16,12 +16,34 @@ socket.on('newMessage', function(msg){
 	notifyMe();
 });
 
-document.querySelector('button').addEventListener("click",function(event){
+document.querySelector('#submit').addEventListener("click",function(event){
 	event.preventDefault();
 
 	var text= document.getElementById('message').value;
 	if(text){
-		var msg= {
+		//call function
+		emit_msg(text);
+	}
+});
+
+document.querySelector('#send_location').addEventListener('click', function(event){
+	event.preventDefault();
+	if(!navigator.geolocation){
+		return alert('Geolocation is not supported by your browser');
+	}
+
+	navigator.geolocation.getCurrentPosition(function(position){
+		var text= `<a target="_blank" href="https://www.google.com/maps/?q=${position.coords.latitude},${position.coords.longitude}">My Current Location</a>`;
+		emit_msg(text);
+	}, function(){
+		alert('Unable to fetch location');
+	}); 
+});
+
+
+//call message emmiter
+function emit_msg(text){
+	var msg= {
 			from: 'User',
 			text: text,
 			createdAt: new Date().getTime()
@@ -37,9 +59,7 @@ document.querySelector('button').addEventListener("click",function(event){
 		append_msg(msg, col);
 
 		document.getElementById('message').value= '';
-	}
-});
-
+}
 
 //append message
 function append_msg(msg, col){
@@ -47,6 +67,7 @@ function append_msg(msg, col){
 	message.innerHTML= msg.from+": "+msg.text;
 	message.style.color= col.text;
 	message.style.background= col.primary;
+	//set color of </a> tags
 	document.getElementById('messages').appendChild(message);
 }
 
@@ -70,7 +91,7 @@ function notifyMe() {
     
       if (permission === "granted") {
         var options = {
-              body: "This is the body of the notification",
+              body: "New Message!",
               dir : "ltr"
           };
         var notification = new Notification("Hi there",options);
