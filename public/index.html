@@ -3,32 +3,29 @@
 	<head>
 		<title>index page</title>
 		<meta author="sanket sanath">
-		<style type="text/css">
-			body{
-				font-family: sans-serif;
-				background-color: #afbbff;
-			}
-			li{
-				padding: 10px;
-				border-radius: 5px;
-				margin: 5px;
-			}
-			ol{ list-style-type: none; }
-		</style>
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
+
 	</head>
-	<body>
-		<p>Welcome to chat app!</p>
+	<body class="chat">
+		
+		<div class="chat__sidebar">
+			<h3>People</h3>
+			<div id="users"></div>
+		</div>
 
-		<ol id="messages">
-
-		</ol>
-		<form>
-			<input type="text" name="message" id="message" placeholder="text message" required="true" value="">
-			<button type="submit" id="submit">Send</button>
-			<button id="send_location">Send Location</button>
-		</form>
+		<div class="chat__main">
+			<ol id="messages" class="chat__messages"></ol>
+			<div class="chat__footer">
+				<form>
+					<input type="text" name="message" id="message" placeholder="Message" required="true" autofocus="true" autocomplete="off">
+					<button type="submit" id="submit">Send</button>
+					<button id="send_location">Send location</button>
+				</form>
+			</div>
+		</div>
 
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="/js/index.js"></script>
+		<script type="text/javascript" src="/js/libs/moment.js"></script>
 	</body>
 </html>

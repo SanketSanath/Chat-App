@@ -26,17 +26,25 @@ document.querySelector('#submit').addEventListener("click",function(event){
 	}
 });
 
-document.querySelector('#send_location').addEventListener('click', function(event){
+var send_location= document.querySelector('#send_location');
+send_location.addEventListener('click', function(event){
 	event.preventDefault();
 	if(!navigator.geolocation){
 		return alert('Geolocation is not supported by your browser');
 	}
 
+	send_location.innerHTML= "Sending location...";
+	send_location.disabled= true;
+	
 	navigator.geolocation.getCurrentPosition(function(position){
+		send_location.disabled= false;
+		send_location.innerHTML= 'Send location';
 		var text= `<a target="_blank" href="https://www.google.com/maps/?q=${position.coords.latitude},${position.coords.longitude}">My Current Location</a>`;
 		emit_msg(text);
 	}, function(){
-		alert('Unable to fetch location');
+		send_location.disabled= false;
+		send_location.innerHTML= 'Send location';
+		alert('Unable to fetch location. Try changing http connection to https connection.');
 	}); 
 });
 
@@ -53,7 +61,7 @@ function emit_msg(text){
 		//change name for your browser
 		msg.from= 'You';
 		var col= {
-			primary: '#5c6bc0',
+			primary: '#4874ba',
 			text: '#fff'
 		}
 		append_msg(msg, col);
@@ -64,7 +72,8 @@ function emit_msg(text){
 //append message
 function append_msg(msg, col){
 	var message= document.createElement("li");
-	message.innerHTML= msg.from+": "+msg.text;
+	var timeStamp= moment(msg.createdAt).format('HH:mm a');
+	message.innerHTML= msg.from+" "+timeStamp+": "+msg.text;
 	message.style.color= col.text;
 	message.style.background= col.primary;
 	//set color of </a> tags
@@ -99,3 +108,4 @@ function notifyMe() {
     });
   }
 }
+
