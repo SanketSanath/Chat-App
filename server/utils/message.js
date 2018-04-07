@@ -1,8 +1,9 @@
-function generateMessage(from, text){
+function generateMessage(from, text, type){
 	return {
 		from,
 		text,
-		createdAt: new Date().getTime()
+		createdAt: new Date().getTime(),
+		type
 	};
 }
 

@@ -19,10 +19,10 @@ socket.on('newMessage', function(msg){
 document.querySelector('#submit').addEventListener("click",function(event){
 	event.preventDefault();
 
-	var text= document.getElementById('message').value;
+	var text= document.getElementById('message').value.trim();
 	if(text){
 		//call function
-		emit_msg(text);
+		emit_msg(text, 'message');
 	}
 });
 
@@ -39,8 +39,8 @@ send_location.addEventListener('click', function(event){
 	navigator.geolocation.getCurrentPosition(function(position){
 		send_location.disabled= false;
 		send_location.innerHTML= 'Send location';
-		var text= `<a target="_blank" href="https://www.google.com/maps/?q=${position.coords.latitude},${position.coords.longitude}">My Current Location</a>`;
-		emit_msg(text);
+		var text= `https://www.google.com/maps/?q=${position.coords.latitude},${position.coords.longitude}`;
+		emit_msg(text, 'location');
 	}, function(){
 		send_location.disabled= false;
 		send_location.innerHTML= 'Send location';
@@ -50,11 +50,12 @@ send_location.addEventListener('click', function(event){
 
 
 //call message emmiter
-function emit_msg(text){
+function emit_msg(text, type){
 	var msg= {
 			from: 'User',
-			text: text,
-			createdAt: new Date().getTime()
+			text,
+			createdAt: new Date().getTime(),
+			type
 		};
 		
 		socket.emit('createMessage', msg);
@@ -71,13 +72,56 @@ function emit_msg(text){
 
 //append message
 function append_msg(msg, col){
-	var message= document.createElement("li");
-	var timeStamp= moment(msg.createdAt).format('HH:mm a');
-	message.innerHTML= msg.from+" "+timeStamp+": "+msg.text;
-	message.style.color= col.text;
-	message.style.background= col.primary;
-	//set color of </a> tags
-	document.getElementById('messages').appendChild(message);
+	// message.style.color= col.text;
+	// message.style.background= col.primary;
+	// //set color of </a> tags
+	// document.getElementById('messages').appendChild(message);
+	var template, html;
+	 if(msg.type==='message'){
+		template= document.getElementById('message_template').textContent;
+
+		html= ejs.render(template,{
+			text: msg.text,
+			from: msg.from,
+			createdAt: moment(msg.createdAt).format('HH:mm a')
+		});
+	}
+	else if(msg.type==="location"){
+		template= document.getElementById('location_template').textContent;
+		
+		html= ejs.render(template,{
+			text: 'My Location',
+			url: msg.text,
+			from: msg.from,
+			createdAt: moment(msg.createdAt).format('HH:mm a')
+		});
+	}
+
+	document.getElementById('messages').insertAdjacentHTML('beforeend', html);
+	scrollToBottom();
+}
+
+
+function scrollToBottom(){
+	//Selectors
+	var messages= document.querySelector("ol");
+	var newMessage= document.querySelector('ol').lastElementChild;
+
+	//Heights
+	var clientHeight= messages.clientHeight;
+	var scrollTop= messages.scrollTop;
+	var scrollHeight= messages.scrollHeight;
+	var newMessageHeight= newMessage.offsetHeight;
+	var lastMessageHeight=0;
+
+	if(newMessage.previousElementSibling){
+		lastMessageHeight= newMessage.previousElementSibling.offsetHeight;
+	}
+
+	if(clientHeight+ scrollTop+ newMessageHeight+ lastMessageHeight>= scrollHeight){
+		console.log('should scroll');
+		newMessage.scrollIntoView();
+	}
 }
 
 //notification

@@ -24,8 +24,35 @@
 			</div>
 		</div>
 
+		<script id="message_template" type="text/template">
+			<li class="message">
+				<div class="message__title">
+					<h4><%=from%></h4>
+					<span><%=createdAt%></span>
+				</div>
+
+				<div class="message__body">
+					<p><%=text%></p>
+				</div>
+			</li>
+		</script>
+
+		<script id="location_template" type="text/template">
+			<li class="message">
+				<div class="message__title">
+					<h4><%=from%></h4>
+					<span><%=createdAt%></span>
+				</div>
+					
+				<div class="message__body">
+					<a target="_blank" href="<%=url%>"><%=text%></a>
+				</div>
+			</li>
+		</script>
+
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="/js/index.js"></script>
 		<script type="text/javascript" src="/js/libs/moment.js"></script>
+		<script type="text/javascript" src="/js/libs/ejs.js"></script>
 	</body>
 </html>
