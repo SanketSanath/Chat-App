@@ -98,7 +98,7 @@ function emit_msg(text, type){
 		//change name for your browser
 		msg.from= 'You';
 		var style= {
-			primary: '#4874ba',
+			primary: '#2949b2',
 			text: '#e8f8f9',
 			title: '#d9fafc',
 			float: 'right'

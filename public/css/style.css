@@ -177,11 +177,11 @@ button:disabled {
 .message__title h4 {
   font-weight: 600;
   margin-right: 10px;
-  font-size: 40%;
+  font-size: 70%;
 }
 
 .message__title span {
-  font-size: 40%;
+  font-size: 70%;
 }
 
 @media (max-width: 600px) {
