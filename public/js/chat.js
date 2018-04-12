@@ -1,4 +1,6 @@
 var socket= io();
+var name= get('name');
+
 socket.on('connect', function(){
 	// console.log('connected from server');
 	var params= {
@@ -40,11 +42,13 @@ socket.on('disconnect', function(){
 });
 
 socket.on('newMessage', function(msg){
-	var col= {
-		primary: '#fff',
-		text: '#000'
+	var style= {
+		primary: '#f4f4f4',
+		text: '#000',
+		title: '#6b6b6b',
+		float: 'left'
 	}
-	append_msg(msg, col);
+	append_msg(msg, style);
 	notifyMe();
 });
 
@@ -84,7 +88,7 @@ send_location.addEventListener('click', function(event){
 //call message emmiter
 function emit_msg(text, type){
 	var msg= {
-			from: 'User',
+			from: name,
 			text,
 			createdAt: new Date().getTime(),
 			type
@@ -93,21 +97,20 @@ function emit_msg(text, type){
 		socket.emit('createMessage', msg);
 		//change name for your browser
 		msg.from= 'You';
-		var col= {
+		var style= {
 			primary: '#4874ba',
-			text: '#fff'
+			text: '#e8f8f9',
+			title: '#d9fafc',
+			float: 'right'
 		}
-		append_msg(msg, col);
+		append_msg(msg, style);
 
 		document.getElementById('message').value= '';
 }
 
 //append message
-function append_msg(msg, col){
-	// message.style.color= col.text;
-	// message.style.background= col.primary;
-	// //set color of </a> tags
-	// document.getElementById('messages').appendChild(message);
+function append_msg(msg, style){
+
 	var template, html;
 	 if(msg.type==='message'){
 		template= document.getElementById('message_template').textContent;
@@ -115,7 +118,11 @@ function append_msg(msg, col){
 		html= ejs.render(template,{
 			text: msg.text,
 			from: msg.from,
-			createdAt: moment(msg.createdAt).format('HH:mm a')
+			createdAt: moment(msg.createdAt).format('HH:mm a'),
+			col_bg: style.primary,
+			col_title: style.title,
+			col_text: style.text,
+			float: style.float
 		});
 	}
 	else if(msg.type==="location"){
@@ -125,7 +132,11 @@ function append_msg(msg, col){
 			text: 'My Location',
 			url: msg.text,
 			from: msg.from,
-			createdAt: moment(msg.createdAt).format('HH:mm a')
+			createdAt: moment(msg.createdAt).format('HH:mm a'),
+			col_bg: col.primary,
+			col_title: style.title,
+			col_text: style.text,
+			float: style.float
 		});
 	}
 
@@ -136,8 +147,8 @@ function append_msg(msg, col){
 
 function scrollToBottom(){
 	//Selectors
-	var messages= document.querySelector("ol");
-	var newMessage= document.querySelector('ol').lastElementChild;
+	var messages= document.querySelector("#messages");
+	var newMessage= messages.lastElementChild;
 
 	//Heights
 	var clientHeight= messages.clientHeight;

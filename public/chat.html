@@ -27,26 +27,31 @@
 
 		<script id="message_template" type="text/template">
 			<li class="message">
-				<div class="message__title">
-					<h4><%=from%></h4>
-					<span><%=createdAt%></span>
-				</div>
+				<div id= "message_box" style="background-color: <%=col_bg%>">
+					<div class="message__title" style="color: <%=col_title%>">
+						<h4><%=from%></h4>
+						<span><%=createdAt%></span>
+					</div>
 
-				<div class="message__body">
-					<p><%=text%></p>
+					<div class="message__body" style="color: <%=col_text%>">
+						<p><%=text%></p>
+					</div>
 				</div>
 			</li>
 		</script>
 
 		<script id="location_template" type="text/template">
 			<li class="message">
-				<div class="message__title">
-					<h4><%=from%></h4>
-					<span><%=createdAt%></span>
-				</div>
-					
-				<div class="message__body">
-					<a target="_blank" href="<%=url%>"><%=text%></a>
+				<div id= "message_box" style="background-color: <%=col_bg%>">
+					<div class="message__title" style="color: <%=col_title%>">
+						<h4><%=from%></h4>
+						<span><%=createdAt%></span>
+					</div>
+				
+
+					<div class="message__body"  style="color: <%=col_text%>">
+						<a target="_blank" href="<%=url%>" style="color: <%=col_text%>"><%=text%></a>
+					</div>
 				</div>
 			</li>
 		</script>
