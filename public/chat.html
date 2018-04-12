@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>chat | hello.app</title>
+		<meta author="sanket sanath">
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+	</head>
+	<body class="chat">
+		
+		<div class="chat__sidebar">
+			<h3>People</h3>
+			<div id="users"></div>
+		</div>
+
+		<div class="chat__main">
+			<ol id="messages" class="chat__messages"></ol>
+			<div class="chat__footer">
+				<form>
+					<input type="text" name="message" id="message" placeholder="Message" required="true" autofocus="true" autocomplete="off">
+					<button type="submit" id="submit">Send</button>
+				</form>
+				<button id="send_location">Send location</button>
+			</div>
+		</div>
+
+		<script id="message_template" type="text/template">
+			<li class="message">
+				<div class="message__title">
+					<h4><%=from%></h4>
+					<span><%=createdAt%></span>
+				</div>
+
+				<div class="message__body">
+					<p><%=text%></p>
+				</div>
+			</li>
+		</script>
+
+		<script id="location_template" type="text/template">
+			<li class="message">
+				<div class="message__title">
+					<h4><%=from%></h4>
+					<span><%=createdAt%></span>
+				</div>
+					
+				<div class="message__body">
+					<a target="_blank" href="<%=url%>"><%=text%></a>
+				</div>
+			</li>
+		</script>
+
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="/js/chat.js"></script>
+		<script type="text/javascript" src="/js/libs/moment.js"></script>
+		<script type="text/javascript" src="/js/libs/ejs.js"></script>
+	</body>
+</html>

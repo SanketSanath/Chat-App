@@ -1,6 +1,38 @@
 var socket= io();
 socket.on('connect', function(){
-	console.log('connected from server');
+	// console.log('connected from server');
+	var params= {
+		name: get('name'),
+		room: get('room'),
+	};
+
+	socket.emit('join', params, function(err){
+		if(err){
+			alert(err);
+			window.location.href="/";
+		} else {
+			
+		}
+	});
+});
+
+socket.on('updatePeople', (users)=>{
+	// console.log(users);
+	var ol= document.createElement('ol');
+	users.forEach(function(user){
+		var li= document.createElement('li');
+		li.innerText= user;
+		ol.appendChild(li);
+	});
+	var users= document.getElementById('users');
+
+	try{
+		users.removeChild(users.firstChild); 
+	} catch(e){
+		// console.log(e);
+	}
+	// users.innerHTML= ol;
+	users.appendChild(ol);
 });
 
 socket.on('disconnect', function(){
@@ -119,9 +151,21 @@ function scrollToBottom(){
 	}
 
 	if(clientHeight+ scrollTop+ newMessageHeight+ lastMessageHeight>= scrollHeight){
-		console.log('should scroll');
 		newMessage.scrollIntoView();
 	}
+}
+
+
+//url decode
+
+function get(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 //notification
